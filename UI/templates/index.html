@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Image Augmentor</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/static/js/index.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <div class="header">
+        <div class="header-text">ImageAugmentor</div>
+      </div>
+
+      <div class="datasets-header content-header">Datasets</div>
+      <div class="datasets content-box grid-container">
+        <div v-for="dataset in datasets" v-on:click="selectDataset(dataset.id)" v-bind:key="dataset.id" class="dataset-container" v-bind:class="{'dataset-selected': dataset.id === selected_dataset}">
+          <div class="dataset-name">{{dataset.name}}</div>
+          <div class="dataset-type">type: {{dataset.type}}</div>
+          <div class="dataset-size">size: {{dataset.size}}</div>
+          <div class="dataset-sample-images flex-container">
+            <img v-for="img_url in dataset.sample_images" v-bind:src="img_url" alt="sample_image" class="flex-item">
+          </div>
+        </div>
+      </div>
+
+      <div class="augment-header content-header">Augment</div>
+      <div v-if="selected_dataset == null" class="augment-advance-message">Upload or Click your dataset.</div>
+      <div v-else class="augment content-box">
+        <div class="augment-options grid-container">
+          <div v-for="option_key in selected_augment_options" class="option-container">
+            <div class="option-name">{{augment_option_choises[option_key].name}}</div>
+            <div class="option-params">
+              <div v-for="conf in augment_option_choises[option_key].params" class="option-param-container">
+                <div class="option-param-name">{{conf.name}}</div>
+                <div v-if="conf.type == 'range'" class="range-container">
+                  <div class="range-min-container">
+                    <label v-bind:for="`${option_key}-${conf.name}-min`" class="range-min-label">min</label>
+                    <input type="number" v-bind:name="`${option_key}-${conf.name}-min`" v-bind:label="`${option_key}-${conf.name}-min`" v-bind:max="conf.max" v-bind:min="conf.min" v-bind:step="conf.step" v-bind:value="conf.min_default"/>
+                  </div>
+                  <div class="range-min-container">
+                    <label v-bind:for="`${option_key}-${conf.name}-min`" class="range-min-label">max</label>
+                    <input type="number" v-bind:name="`${option_key}-${conf.name}-max`" v-bind:label="`${option_key}-${conf.name}-max`" v-bind:max="conf.max" v-bind:min="conf.min" v-bind:step="conf.step" v-bind:value="conf.max_default"/>
+                  </div>
+                </div>
+                <div v-if="conf.type == 'select'">
+                  <div v-for="choise in conf.choises">
+                    <input type="radio" v-bind:id="choise" v-bind:name="`${option_key}-${conf.name}`" v-bind:value="choise" v-bind:checked="choise == conf.default">
+                    <label v-bind:for="choise">{{choise}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <button v-on:click="toggleAugmentOptionDialog" class="wide">+ More Option</button>
+        <div class="execute">
+          <button v-on:click="toggleAugmentSampleDialog" class="execute-sample-button">Show Sample</button>
+          <div>or</div>
+          <button class="execute-button">Execute</button>
+        </div>
+
+        <dialog id="augment-sample-dialog" class="dialog">
+          <div class="dialog-header">Augmentation Sample</div>
+          <div class="dialog-body">
+            <img src="/static/sample.png" alt="sample image" class="execute-sample-image">
+          </div>
+          <div class="dialog-footer">
+            <button>exec</button>
+            <button v-on:click="toggleAugmentSampleDialog">cancel</button>
+          </div>
+        </dialog>
+
+        <dialog id="augment-choises-dialog" class="dialog">
+          <div class="dialog-header">Augmentation Sample</div>
+          <div class="dialog-body">
+              <div class="augment-choises">
+                <div v-for="augment_option in augment_option_choises" class="augment-choise">
+                  <div class="augment-name">{{augment_option.name}}</div>
+                  <div class="augment-sample">
+                    <img v-bind:src="augment_option.sample_images.before" alt="sample-before" class="augment-sample-before">
+                    <img v-bind:src="augment_option.sample_images.after" alt="sample-after" class="augment-sample-before">
+                  </div>
+                  <button v-on:click="addAugmentOption(augment_option.name);toggleAugmentOptionDialog()">Add</button>
+                </div>
+              </div>
+          </div>
+          <div class="dialog-footer">
+            <button v-on:click="toggleAugmentOptionDialog">cancel</button>
+          </div>
+        </dialog>
+
+      </div>
+
+      <div class="results">
+        <div class="results-header">Results</div>
+        <div v-for="result in results" class="result-container">
+          <div class="result-name">{{result.name}}</div>
+          <div class="result-type">{{result.type}}</div>
+          <div class="result-status">{{result.status}}</div>
+          <div class="result-progress">
+              <label v-bind:for="result.id">Augmentation progress:</label>
+              <progress v-bind:id="result.id" max="100" v-bind:value="result.progress">{{result.progress}}</progress>
+          </div>
+          <button>Download</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
