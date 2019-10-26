@@ -24,11 +24,16 @@
           </div>
         </div>
         <div v-for="dataset in datasets" v-on:click="selectDataset(dataset.id)" v-bind:key="dataset.id" class="dataset-container" v-bind:class="{'dataset-selected': dataset.id === selected_dataset}">
-          <div class="dataset-name">{{dataset.name}}</div>
+          <div class="dataset-container-header">
+            <div class="dataset-name">{{dataset.name}}</div>
+            <button v-on:click="deleteDataset(dataset.id)" class="small">delete</button>
+          </div>
           <div class="dataset-type">type: {{dataset.type}}</div>
           <div class="dataset-size">size: {{dataset.size}}</div>
           <div class="dataset-sample-images">
-            <img v-for="img_url in dataset.sample_images" v-bind:src="img_url" alt="sample_image">
+            <img v-bind:src="dataset.sample_images[0]" alt="sample_image">
+            <img v-bind:src="dataset.sample_images[1]" alt="sample_image">
+            <img v-bind:src="dataset.sample_images[2]" alt="sample_image">
           </div>
         </div>
       </div>
@@ -37,24 +42,27 @@
       <div v-if="selected_dataset == null" class="augment-advance-message">Upload or Click your dataset.</div>
       <div v-else class="augment content-box">
         <div class="augment-options grid-container">
-          <div v-for="option_key in selected_augment_options" class="option-container">
-            <div class="option-name">{{augment_option_choises[option_key].name}}</div>
+          <div v-for="option_key in selected_augment_options" class="option-container" v-bind:key="option_key">
+            <div class="option-container-header">
+              <div class="option-name">{{augment_option_choises[option_key].name}}</div>
+              <button v-on:click="deleteAugmentOption(option_key)" class="small">delete</button>
+            </div>
             <div class="option-params">
-              <div v-for="conf in augment_option_choises[option_key].params" class="option-param-container">
+              <div v-for="conf in augment_option_choises[option_key].params" class="option-param-container" v-bind:key="conf.name">
                 <div class="option-param-name">{{conf.name}}</div>
                 <div v-if="conf.type == 'range'" class="range-container">
                   <div class="range-min-container">
                     <label v-bind:for="`${option_key}-${conf.name}-min`" class="range-min-label">min</label>
-                    <input type="number" v-bind:name="`${option_key}-${conf.name}-min`" v-bind:label="`${option_key}-${conf.name}-min`" v-bind:max="conf.max" v-bind:min="conf.min" v-bind:step="conf.step" v-bind:value="conf.min_default"/>
+                    <input type="number" v-bind:name="`${option_key}-${conf.name}-min`" v-bind:label="`${option_key}-${conf.name}-min`" v-bind:max="conf.max" v-bind:min="conf.min" v-bind:step="conf.step" v-model="augment_value[option_key][conf.name]['min']"/>
                   </div>
                   <div class="range-min-container">
                     <label v-bind:for="`${option_key}-${conf.name}-min`" class="range-min-label">max</label>
-                    <input type="number" v-bind:name="`${option_key}-${conf.name}-max`" v-bind:label="`${option_key}-${conf.name}-max`" v-bind:max="conf.max" v-bind:min="conf.min" v-bind:step="conf.step" v-bind:value="conf.max_default"/>
+                    <input type="number" v-bind:name="`${option_key}-${conf.name}-max`" v-bind:label="`${option_key}-${conf.name}-max`" v-bind:max="conf.max" v-bind:min="conf.min" v-bind:step="conf.step" v-model="augment_value[option_key][conf.name]['max']"/>
                   </div>
                 </div>
                 <div v-if="conf.type == 'select'">
-                  <div v-for="choise in conf.choises">
-                    <input type="radio" v-bind:id="choise" v-bind:name="`${option_key}-${conf.name}`" v-bind:value="choise" v-bind:checked="choise == conf.default">
+                  <div v-for="choise in conf.choises" v-bind:key="choise">
+                    <input type="radio" v-bind:id="choise" v-bind:name="`${option_key}-${conf.name}`" v-bind:value="choise" v-bind:checked="choise == conf.default" v-model="augment_value[option_key][conf.name]">
                     <label v-bind:for="choise">{{choise}}</label>
                   </div>
                 </div>
@@ -89,13 +97,13 @@
           <div class="dialog-header">Augmentation Sample</div>
           <div class="dialog-body">
               <div class="augment-choises grid-container">
-                <div v-for="augment_option in augment_option_choises" class="augment-choise-container">
-                  <div class="augment-name">{{augment_option.name}}</div>
+                <div v-for="option_key in not_selected_augment_options" v-bind:key="option_key" class="augment-choise-container">
+                  <div class="augment-name">{{augment_option_choises[option_key].name}}</div>
                   <div class="augment-sample">
-                    <img v-bind:src="augment_option.sample_images.before" alt="sample-before" class="augment-sample-before">
-                    <img v-bind:src="augment_option.sample_images.after" alt="sample-after" class="augment-sample-before">
+                    <img v-bind:src="augment_option_choises[option_key].sample_images.before" alt="sample-before" class="augment-sample-before">
+                    <img v-bind:src="augment_option_choises[option_key].sample_images.after" alt="sample-after" class="augment-sample-before">
                   </div>
-                  <button v-on:click="addAugmentOption(augment_option.name);toggleAugmentOptionDialog()" class="wide">Add</button>
+                  <button v-on:click="addAugmentOption(augment_option_choises[option_key].name);toggleAugmentOptionDialog()" class="wide">Add</button>
                 </div>
               </div>
           </div>
@@ -106,17 +114,16 @@
 
       </div>
 
-      <div class="results">
-        <div class="results-header">Results</div>
-        <div v-for="result in results" class="result-container">
+      <div class="results-header content-header">Results</div>
+      <div class="results content-box grid-container">
+        <div v-for="result in results" v-bind:key="result.id" class="result-container">
           <div class="result-name">{{result.name}}</div>
-          <div class="result-type">{{result.type}}</div>
-          <div class="result-status">{{result.status}}</div>
+          <div class="result-type">type: {{result.type}}</div>
+          <div class="result-status">status: {{result.status}}</div>
           <div class="result-progress">
-              <label v-bind:for="result.id">Augmentation progress:</label>
               <progress v-bind:id="result.id" max="100" v-bind:value="result.progress">{{result.progress}}</progress>
           </div>
-          <button>Download</button>
+          <button class="wide">Download</button>
         </div>
       </div>
     </div>
