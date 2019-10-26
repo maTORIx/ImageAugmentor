@@ -16,12 +16,19 @@
 
       <div class="datasets-header content-header">Datasets</div>
       <div class="datasets content-box grid-container">
+        <div class="dataset-container dataset-upload">
+          <div class="dataset-upload-container">
+            <div class="dataset-upload-text">Upload</div>
+            <div class="dataset-upload-message">Click here to start uploadìng.</div>
+            <div class="dataset-upload-plus-text">+</div>
+          </div>
+        </div>
         <div v-for="dataset in datasets" v-on:click="selectDataset(dataset.id)" v-bind:key="dataset.id" class="dataset-container" v-bind:class="{'dataset-selected': dataset.id === selected_dataset}">
           <div class="dataset-name">{{dataset.name}}</div>
           <div class="dataset-type">type: {{dataset.type}}</div>
           <div class="dataset-size">size: {{dataset.size}}</div>
-          <div class="dataset-sample-images flex-container">
-            <img v-for="img_url in dataset.sample_images" v-bind:src="img_url" alt="sample_image" class="flex-item">
+          <div class="dataset-sample-images">
+            <img v-for="img_url in dataset.sample_images" v-bind:src="img_url" alt="sample_image">
           </div>
         </div>
       </div>
@@ -53,14 +60,18 @@
                 </div>
               </div>
             </div>
-            
+          </div>
+          <div v-on:click="toggleAugmentOptionDialog" class="option-container option-append">
+            <div class="option-append-container">
+              <div class="option-append-text">Add Option</div>
+              <div class="option-append-message">Click here to add option.</div>
+              <div class="option-append-plus-text">+</div>
+            </div>
           </div>
         </div>
-        <button v-on:click="toggleAugmentOptionDialog" class="wide">+ More Option</button>
-        <div class="execute">
-          <button v-on:click="toggleAugmentSampleDialog" class="execute-sample-button">Show Sample</button>
-          <div>or</div>
-          <button class="execute-button">Execute</button>
+        <div class="augment-execute">
+          <button v-on:click="toggleAugmentSampleDialog" class="augment-execute-sample-button green wide">Show Sample</button>
+          <button class="augment-execute-button wide">Execute</button>
         </div>
 
         <dialog id="augment-sample-dialog" class="dialog">
@@ -77,19 +88,19 @@
         <dialog id="augment-choises-dialog" class="dialog">
           <div class="dialog-header">Augmentation Sample</div>
           <div class="dialog-body">
-              <div class="augment-choises">
-                <div v-for="augment_option in augment_option_choises" class="augment-choise">
+              <div class="augment-choises grid-container">
+                <div v-for="augment_option in augment_option_choises" class="augment-choise-container">
                   <div class="augment-name">{{augment_option.name}}</div>
                   <div class="augment-sample">
                     <img v-bind:src="augment_option.sample_images.before" alt="sample-before" class="augment-sample-before">
                     <img v-bind:src="augment_option.sample_images.after" alt="sample-after" class="augment-sample-before">
                   </div>
-                  <button v-on:click="addAugmentOption(augment_option.name);toggleAugmentOptionDialog()">Add</button>
+                  <button v-on:click="addAugmentOption(augment_option.name);toggleAugmentOptionDialog()" class="wide">Add</button>
                 </div>
               </div>
           </div>
           <div class="dialog-footer">
-            <button v-on:click="toggleAugmentOptionDialog">cancel</button>
+            <button v-on:click="toggleAugmentOptionDialog" class="wide green">cancel</button>
           </div>
         </dialog>
 
