@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 min: param.min_default,
                                 max: param.max_default
                             }
-                        } else if (param.type == "select") {
+                        } else if (param.type == "select" || param.type == "number") {
                             result[option_key][param.name] = param.default
                         }
                     }

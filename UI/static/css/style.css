@@ -71,6 +71,7 @@ input:focus {
 }
 
 
+
 /* range input */
 
 .range-container {
@@ -178,6 +179,20 @@ dialog[open] {
   100%{
     transform: translateY(0);
   }
+}
+
+/* progress */
+progress[value] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 20px;
+    background-color: #fafafa;
+    border-bottom: #eee solid 1px;
+}
+
+progress::-webkit-progress-value {
+    background-color: #333;
 }
 
 /* ---------------------- */
@@ -291,7 +306,9 @@ dialog[open] {
 
 .option-container .option-name {
     padding: 10px 0px 1px 10px;
-    font-size: 18px;
+    font-size: 17px;
+    max-width: calc(100% - 50px);
+    overflow-wrap: break-word;
 }
 
 .option-container .option-params {
@@ -351,6 +368,9 @@ dialog[open] {
     font-size: 18px;
     margin: 10px 0px 10px 10px;
     border-bottom: #777 solid 1px;
+    max-width: calc(100% - 10px);
+    overflow-x: scroll;
+    white-space: hidden;
 }
 
 .augment-choise-container .augment-sample {
@@ -396,11 +416,17 @@ dialog[open] {
 }
 
 .result-container .result-progress  {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .result-container .result-progress label {
-    font-size: 12px;
+    display: block;
+    position: relative;
+    top: 17px;
+    font-size: 14px;
     text-align: center;
-    background-color: skyblue;
+    background-color: transparent;
+    color: white;
+    transition: .5s;
 }
+
