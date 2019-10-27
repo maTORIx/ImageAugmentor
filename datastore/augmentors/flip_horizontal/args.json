@@ -1,0 +1,17 @@
+{
+    "name": "flip_horizontal",
+    "dataset_types": ["image_classification", "image_object_detection", "image_pix2pix"],
+    "sample_images": {
+        "before": "/augmentors/flip_horizontal/sample.png",
+        "after": "/augmentors/flip_horizontal/sample.png"
+    },
+    "params": [{
+        "name": "adaptation_percentage",
+        "type": "range",
+        "unit": "%",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 100
+    }]
+}

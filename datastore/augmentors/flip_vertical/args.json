@@ -1,0 +1,17 @@
+{
+    "name": "flip_vertical",
+    "dataset_types": ["image_classification", "image_object_detection", "image_pix2pix"],
+    "sample_images": {
+        "before": "/augmentors/filp_vertical/sample.png",
+        "after": "/augmentors/flip_vertical/sample.png"
+    },
+    "params": [{
+        "name": "adaptation_percentage",
+        "type": "number",
+        "unit": "%",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 100
+    }]
+}

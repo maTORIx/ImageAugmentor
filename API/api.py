@@ -30,7 +30,7 @@ def list_results():
         "type": "classification",
         "size": "400MB",
         "augmentation_option": {},
-        "progress": 100,
+        "progress": 80,
         "status": "finished"
     }])
 
@@ -56,12 +56,23 @@ def list_augment_choises():
                 "before": "/static/sample.png",
                 "after": "/static/sample.png"
             },
-            "params": [{
-                "name": "random",
-                "type": "select",
-                "choises": ["true", "false"],
-                "default": "false"
-            }]
+            "params": [
+                {
+                    "name": "random",
+                    "type": "select",
+                    "choises": ["true", "false"],
+                    "default": "false"
+                },
+                {
+                    "name": "exec_percentage",
+                    "type": "number",
+                    "unit": "%",
+                    "min": 0,
+                    "max": 100,
+                    "step": 0.1,
+                    "min_default": 100,
+                }
+            ]
         },
         "crop": {
             "name": 'crop',
@@ -73,38 +84,42 @@ def list_augment_choises():
                 {
                     "name": "top",
                     "type": "range",
+                    "unit": "%",
                     "min": 0,
-                    "max": 1,
-                    "step": 0.01,
+                    "max": 100,
+                    "step": 0.1,
                     "min_default": 0,
-                    "max_default": 1
+                    "max_default": 100,
                 },
                 {
                     "name": "bottom",
                     "type": "range",
+                    "unit": "%",
                     "min": 0,
-                    "max": 1,
-                    "step": 0.01,
+                    "max": 100,
+                    "step": 0.1,
                     "min_default": 0,
-                    "max_default": 1
+                    "max_default": 100,
                 },
                 {
                     "name": "left",
                     "type": "range",
+                    "unit": "%",
                     "min": 0,
-                    "max": 1,
-                    "step": 0.01,
+                    "max": 100,
+                    "step": 0.1,
                     "min_default": 0,
-                    "max_default": 1
+                    "max_default": 100,
                 },
                 {
                     "name": "right",
                     "type": "range",
+                    "unit": "%",
                     "min": 0,
-                    "max": 1,
-                    "step": 0.01,
+                    "max": 100,
+                    "step": 0.1,
                     "min_default": 0,
-                    "max_default": 1
+                    "max_default": 100,
                 },
                 {
                     "name": "select",

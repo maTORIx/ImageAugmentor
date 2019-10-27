@@ -365,7 +365,7 @@ progress::-webkit-progress-value {
 }
 
 .augment-choise-container .augment-name {
-    font-size: 18px;
+    font-size: 17px;
     margin: 10px 0px 10px 10px;
     border-bottom: #777 solid 1px;
     max-width: calc(100% - 10px);
