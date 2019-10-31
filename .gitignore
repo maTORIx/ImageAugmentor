@@ -4,3 +4,4 @@ venv
 __pycache__
 datastore/results
 datastore/datas
+datastore/tmp
