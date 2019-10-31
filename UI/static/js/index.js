@@ -1,6 +1,6 @@
 
 const API_ROOT = "/api"
-const DEFAULT_AUGMENT_OPTIONS = ["crop"]
+const DEFAULT_AUGMENT_OPTIONS = []
 const PARAM_TYPES = ["range", "select"]
 
 document.addEventListener("DOMContentLoaded", function() {

@@ -1,8 +1,8 @@
 {
     "name": "flip_vertical",
-    "dataset_types": ["image_classification", "image_object_detection", "image_pix2pix"],
+    "data_types": ["image_classification", "image_object_detection", "image_pix2pix"],
     "sample_images": {
-        "before": "/augmentors/filp_vertical/sample.png",
+        "before": "/augmentors/flip_vertical/sample.png",
         "after": "/augmentors/flip_vertical/sample.png"
     },
     "params": [{

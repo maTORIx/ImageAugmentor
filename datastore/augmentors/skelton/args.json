@@ -1,6 +1,6 @@
 {
-    "name": "flip_vertical",
-    "dataset_types": ["image_classification", "image_object_detection", "image_pix2pix"],
+    "name": "skelton",
+    "data_types": ["image_classification", "image_object_detection", "image_pix2pix"],
     "sample_images": {
         "before": "/augmentors/skelton/sample.png",
         "after": "/augmentors/skelton/sample.png"
@@ -22,7 +22,7 @@
             "min": 0,
             "max": 100,
             "step": 1,
-            "min_default": 100,
+            "min_default": 0,
             "max_default": 100
         },
         {
