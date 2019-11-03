@@ -4,12 +4,27 @@ body {
     font-family: "Roboto";
 }
 
-.container {
-}
-
 img {
     width: 100px;
     height: 100px;
+}
+
+/* general */
+
+.w100 {
+    width: 100%;
+}
+
+.p10 {
+    padding: 10px;
+}
+
+.pl10 {
+    padding-left: 10px;
+}
+
+.m10 {
+    margin: 10px
 }
 
 /* header */
@@ -70,7 +85,31 @@ input:focus {
   outline: none;
 }
 
+/* select */
 
+select{
+    outline:none;
+    text-indent: 0.01px;
+    text-overflow: '';
+    background: none transparent;
+    vertical-align: middle;
+    font-size: inherit;
+    color: inherit;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+}
+select option{
+  background-color: #fff;
+  color: #333;
+}
+select::-ms-expand {
+  display: none;
+}
+select:-moz-focusring { 
+  color: transparent; 
+  text-shadow: 0 0 0 #828c9a;
+}
 
 /* range input */
 
@@ -138,6 +177,7 @@ dialog {
   border-radius: 3px;
   border: 0;
   padding: 0;
+  top: 20vh;
 }
 
 dialog::backdrop {
@@ -275,6 +315,33 @@ progress::-webkit-progress-value {
 .dataset-container .dataset-sample-images img {
     width: 33%;
     height: 33%;
+}
+
+.upload-form {
+    padding: 10px;
+}
+
+.upload-form .upload-input-header {
+    font-size: 15px;
+    margin: 10px 0px;
+    border-bottom: #eee solid 1px;
+}
+
+.upload-form .upload-datatype-expression {
+    margin: 10px 0px;
+    white-space: pre;
+    max-height: 20vh;
+    overflow-y: scroll;
+    border: #eee solid 1px;
+}
+
+.upload-form .upload-file {
+    border: none;
+    padding: 0px;
+}
+
+.upload-form .upload-button {
+    margin-top: 10px;
 }
 
 /* ---------------------- */

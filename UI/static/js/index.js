@@ -9,21 +9,24 @@ document.addEventListener("DOMContentLoaded", function() {
         data() {
             return {
                 datasets: [],
+                data_types: [],
                 results: [],
                 selected_dataset: null,
                 selected_augment_options: [],
                 augment_value: {},
                 augment_option_choises: {},
-                augment_option_dialog: false,
                 augment_sample_data: [],
                 augment_sample_loading: false,
+                upload_data_type: "",
+                upload_dialog: false,
+                augment_option_dialog: false,
                 augment_sample_dialog: false,
                 error: []
             }
         },
         methods: {
             async loadDatasets(ids=[]) {
-                const target = API_ROOT + "/datasets"
+                const target = API_ROOT + "/datas"
                 if (ids.length > 0) target += "?ids=" + ids.join(",")
                 
                 const res = await fetch(target)
@@ -40,6 +43,12 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             async loadAugmentOptionChoises() {
                 const target = API_ROOT + "/augment/option_choises"
+                const res = await fetch(target)
+                if (!res.ok) throw new Error("Failed to access api.")
+                return res.json()
+            },
+            async loadDataTypes() {
+                const target = API_ROOT + "/data_types"
                 const res = await fetch(target)
                 if (!res.ok) throw new Error("Failed to access api.")
                 return res.json()
@@ -83,6 +92,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 this.selected_augment_options.splice(target_idx, 1)
                 this.augment_value[option_name].enable = false
             },
+            toggleUploadDialog() {
+                const upload_dialog = document.querySelector("#upload-dialog")
+                this.upload_dialog = !this.upload_dialog
+                if (this.upload_dialog) {
+                    upload_dialog.showModal()
+                } else {
+                    upload_dialog.close()
+                }
+            },
             toggleAugmentOptionDialog() {
                 const augment_option_dialog = document.querySelector("#augment-choises-dialog")
                 this.augment_option_dialog = !this.augment_option_dialog
@@ -114,10 +132,11 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         async mounted() {
             try {
-                [this.datasets, this.results, this.augment_option_choises] = await Promise.all([
+                [this.datasets, this.results, this.augment_option_choises, this.data_types] = await Promise.all([
                     this.loadDatasets(),
                     this.loadResults(),
-                    this.loadAugmentOptionChoises()
+                    this.loadAugmentOptionChoises(),
+                    this.loadDataTypes()
                 ])
                 this.selected_augment_options = DEFAULT_AUGMENT_OPTIONS
                 this.setAugmentOptionValue(this.augment_option_choises)

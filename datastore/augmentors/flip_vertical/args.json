@@ -2,8 +2,8 @@
     "name": "flip_vertical",
     "data_types": ["image_classification", "image_object_detection", "image_pix2pix"],
     "sample_images": {
-        "before": "/augmentors/flip_vertical/sample.png",
-        "after": "/augmentors/flip_vertical/sample.png"
+        "before": "/datastore/augmentors/flip_vertical/sample.png",
+        "after": "/datastore/augmentors/flip_vertical/sample.png"
     },
     "params": [{
         "name": "adaptation_percentage",

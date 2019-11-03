@@ -11,10 +11,11 @@ app = Bottle()
 
 DATASTORE = "./datastore"
 
-AUGMENT_CHOISES = subprocess.check_output(["python", "COMMAND/image-augmentor.py",  "list", "--json"])
+AUGMENT_CHOISES = subprocess.check_output(["python", "COMMAND/image-augmentor.py",  "augmentors", "--json"])
+DATA_TYPES = subprocess.check_output(["python", "COMMAND/image-augmentor.py",  "types", "--json"])
 ALLOW_DATASET_EXT = [".zip", ".ZIP", ".tar.gz", ".tar"]
 
-@app.route("/datasets")
+@app.route("/datas")
 def list_datasets():
     tmp = {
         "id": "abeee",
@@ -30,7 +31,7 @@ def list_datasets():
     }
     return json.dumps([tmp])
 
-@app.route("/datasets", method="POST")
+@app.route("/datas", method="POST")
 def post_dataset():
     uid = uuid.uuid4()
     file = request.files.file
@@ -53,6 +54,10 @@ def post_dataset():
         }),
         status=202
     )
+
+@app.route("/data_types")
+def list_data_types():
+    return DATA_TYPES
 
 @app.route("/results")
 def list_results():

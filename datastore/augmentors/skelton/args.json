@@ -2,8 +2,8 @@
     "name": "skelton",
     "data_types": ["image_classification", "image_object_detection", "image_pix2pix"],
     "sample_images": {
-        "before": "/augmentors/skelton/sample.png",
-        "after": "/augmentors/skelton/sample.png"
+        "before": "/datastore/augmentors/skelton/sample.png",
+        "after": "/datastore/augmentors/skelton/sample.png"
     },
     "params": [
         {

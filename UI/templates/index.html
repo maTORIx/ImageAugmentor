@@ -16,7 +16,7 @@
 
       <div class="datasets-header content-header">Datasets</div>
       <div class="datasets content-box grid-container">
-        <div class="dataset-container dataset-upload">
+        <div v-on:click="toggleUploadDialog" class="dataset-container dataset-upload">
           <div class="dataset-upload-container">
             <div class="dataset-upload-text">Upload</div>
             <div class="dataset-upload-message">Click here to start uploadìng.</div>
@@ -37,6 +37,29 @@
           </div>
         </div>
       </div>
+
+      <dialog id="upload-dialog" class="dialog">
+        <div class="dialog-header">Upload</div>
+        <div class="dialog-body">
+          <form action="/api/datas" method="POST" enctype="multipart/form-data" class="upload-form">
+            <div class="upload-input-header">Data Type</div>
+            <select v-model="upload_data_type" name="data-type" class="upload-datatype-select">
+              <option value="" style="display: none;">Select DataType</option>
+              <option v-for="key in Object.keys(data_types)" v-bind:value="key">{{key}}</option>
+            </select>
+            <div v-if="upload_data_type !== ''">
+                <div class="upload-input-header">README</div>
+                <div class="upload-datatype-expression">{{data_types[upload_data_type]}}</div>
+                <div class="upload-input-header">File</div>
+                <input type="file" class="upload-file">
+                <button type="submit" class="wide upload-button" disabled>Upload</button>
+            </div>
+          </form>
+        </div>
+        <div class="dialog-footer">
+          <button v-on:click="toggleUploadDialog" class="wide green">cancel</button>
+        </div>
+      </dialog>
 
       <div class="augment-header content-header">Augment</div>
       <div v-if="selected_dataset == null" class="augment-advance-message">Upload or Click your dataset.</div>

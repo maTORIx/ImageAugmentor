@@ -7,14 +7,14 @@ datset
 ├── labelA
 │   └── image.xxx
 ├── labelB
-│   ├── hogehoge
-│   ├── fugafuga
-│   └── testtest
-└── label...
+│   ├── hogehoge.xxx
+│   ├── fugafuga.xxx
+│   └── testtest.xxx
+└── labelC
     └── ...
 ```
 
-## Image Formats
+## Image Format Supports
 
 - png
 - PNG
